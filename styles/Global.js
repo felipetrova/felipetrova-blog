@@ -55,6 +55,13 @@ const GlobalStyles = createGlobalStyle`
     a {
       color: ${C.DARK_GREY};
     }
+
+    p {
+    
+      a {
+        color: ${C.GREEN};
+      }
+    }
     
     img {
       display: inline-block;

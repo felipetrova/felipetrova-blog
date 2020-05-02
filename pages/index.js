@@ -1,68 +1,56 @@
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 
 import * as GridStyle from "~/styles/Grid";
 
 import HeaderComponent from "~/components/Header/Header";
 import LoadingComponent from "~/components/Loading/Loading";
-import AlbumComponent from "~/components/Album/Album";
-import SearchComponent from "~/components/Search/Search";
+import RepoComponent from "~/components/Repository/Repository";
 
-import axios from "axios";
+import API from "~/Services/Api";
 
 const Index = () => {
-  const [setArtists, setArtistsState] = useState([]);
+  const [setUser, setUserState] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [setRepos, setReposState] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isVisibleSearch, setVisibleSearchState] = useState(false);
 
-  const loadArtists = useCallback(async term => {
-    if(term === undefined) {
-      term = "Metallica";
-    }
-    const query = encodeURIComponent(`{
-      queryArtists(byName: "${term}") {
-        name
-        id
-        image
-        albums {
-          name
-          id
-          image 
-        }
-      }
-    }`);
-
+  const loadUser = useCallback(async () => {
     try {
       setLoading(true);
-      axios(`https://spotify-graphql-server.herokuapp.com/graphql?query=${query}`).then(res => {
-        if(res.data.data.queryArtists !== null && res.data.data.queryArtists.length > 0) {
-          setArtistsState(res.data.data.queryArtists[0]);
-          localStorage.setItem('Artists', JSON.stringify(res.data.data.queryArtists[0]));
-        } else {
-          console.log('error');
-        }
-        setVisibleSearchState(false);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      const response = await API.get(`/users/felipetrova`);
+      setUserState(response.data);
+
+      if (response.data.length === 0) {
+        console.log("User not found. Please try again.");
+      }
     } catch (error) {
-      console.log(error);
+      console.log("User not found. Please try again.");
     }
 
     setLoading(false);
   });
 
-  function changeVisibleSearch(param) {
-    setVisibleSearchState(param);
-  }
+  const loadRepos = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await API.get(`/users/felipetrova/repos`);
+      setReposState(response.data);
 
-  async function searchArtists(term) {
-    loadArtists(term);
-  }
+      if (response.data.length === 0) {
+        console.log("Repositories not found. Please try again.");
+      }
+    } catch (error) {
+      console.log("Repositories not found. Please try again.");
+    }
+
+    setLoading(false);
+  });
 
   useEffect(() => {
-    loadArtists();
-    document.title = "Spotify Artist Album";
+    loadUser();
+    loadRepos();
+    document.title = "Felipe Trova - Blog";
   }, []);
 
   return (
@@ -71,71 +59,125 @@ const Index = () => {
 
       <HeaderComponent
         link="/"
-        title={`Spotify PWA Test`}
+        title="My personal blog"
       />
 
-      <div className="mt-65px">
+      <div className="mt-45px">
         <GridStyle.Container>
           <GridStyle.Row>
-            <GridStyle.Col general={12}>
-              <p className="fn-s30px has-text-centered tx-up tx-green">
-                Album Finder
-              </p>
-            </GridStyle.Col>
-
-            <GridStyle.Col general={12}>
-              <SearchComponent
-                searchArtists={e => searchArtists(e)}
-                isVisibleSearch={isVisibleSearch}
-                changeVisibleSearch={(e) => changeVisibleSearch(e)}
-              />
-            </GridStyle.Col>
-          </GridStyle.Row>
-
-          <GridStyle.Row>
-            <GridStyle.Col desktop={3}/>
+            <GridStyle.Col desktop={2}/>
             <GridStyle.Col
               mobile={12}
               tablet={12}
-              desktop={6}
+              desktop={8}
+              className="no-margin"
             >
               <div className="card has-text-centered">
                 <GridStyle.Row>
                   <GridStyle.Col
                     mobile={4}
-                    tablet={6}
-                    desktop={6}
+                    tablet={3}
+                    desktop={4}
                     className="no-margin"
                   >
-                    <img src={setArtists.image} />
+                    <img src={setUser.avatar_url} />
                   </GridStyle.Col>
+
                   <GridStyle.Col
                     mobile={8}
-                    tablet={6}
-                    desktop={6}
+                    tablet={9}
+                    desktop={8}
                     className="no-margin"
                   >
-                    <p className="tx-up fn-s30px tx-green">
-                      {setArtists.name}
+                    <p className="fn-s30px tx-green">
+                      {setUser.name}
                     </p>
+                  </GridStyle.Col>
+                </GridStyle.Row>
+
+                <GridStyle.Row className="mt-40px">
+                  <GridStyle.Col general={12}>
+                    <p className="fn-s16px tx-white">
+                      {setUser.bio}
+                    </p>
+
+                    <p className="fn-s16px tx-white mt-16px">
+                      My contacts:
+                    </p>
+
+                    <GridStyle.Row>
+                      <GridStyle.Col
+                        mobile={12}
+                        tablet={4}
+                        desktop={4}
+                        className="no-margin"
+                      >
+                        <p className="fn-s16px tx-white mt-6px">
+                          <Link
+                            href="mailto:felipee.trova@gmail.com"
+                            prefetch={false}
+                          >
+                            <a>
+                              felipee.trova@gmail.com
+                            </a>
+                          </Link>
+                        </p>
+                      </GridStyle.Col>
+
+                      <GridStyle.Col
+                        mobile={12}
+                        tablet={4}
+                        desktop={4}
+                        className="no-margin"
+                      >
+                        <p className="fn-s16px tx-white mt-6px">
+                          <Link
+                            href="https://twitter.com/felipetrova"
+                            prefetch={false}
+                          >
+                            <a>
+                              https://twitter.com/felipetrova
+                            </a>
+                          </Link>
+                        </p>
+                      </GridStyle.Col>
+
+                      <GridStyle.Col
+                        mobile={12}
+                        tablet={4}
+                        desktop={4}
+                        className="no-margin"
+                      >
+                        <p className="fn-s16px tx-white mt-6px">
+                          <Link
+                            href={setUser.html_url}
+                            prefetch={false}
+                          >
+                            <a>
+                              {setUser.html_url}
+                            </a>
+                          </Link>
+                        </p>
+                      </GridStyle.Col>
+                    </GridStyle.Row>
                   </GridStyle.Col>
                 </GridStyle.Row>
               </div>
             </GridStyle.Col>
-            <GridStyle.Col desktop={3}/>
+            <GridStyle.Col desktop={2}/>
           </GridStyle.Row>
 
           <GridStyle.Row>
-            {setArtists.albums && setArtists.albums.length > 0 &&
-              setArtists.albums.map((item, index) => (
+            {setRepos && setRepos.length > 0 &&
+              setRepos.map((item, index) => (
                 <GridStyle.Col
                   key={index + 1}
                   mobile={12}
-                  tablet={4}
-                  desktop={3}
+                  tablet={6}
+                  desktop={4}
                 >
-                  <AlbumComponent
-                    albumProps={item}
+                  <RepoComponent
+                    repoProps={item}
                   />
                 </GridStyle.Col>
               ))
