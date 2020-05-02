@@ -7,7 +7,7 @@ import HeaderComponent from "~/components/Header/Header";
 import LoadingComponent from "~/components/Loading/Loading";
 import RepoComponent from "~/components/Repository/Repository";
 
-import API from "~/Services/Api";
+import axios from "axios";
 
 const Index = () => {
   const [setUser, setUserState] = useState([]);
@@ -18,12 +18,14 @@ const Index = () => {
   const loadUser = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await API.get(`/users/felipetrova`);
-      setUserState(response.data);
-
-      if (response.data.length === 0) {
-        console.log("User not found. Please try again.");
-      }
+      axios(`https://api.github.com/users/felipetrova`).then(res => {
+        console.log(res.data);
+        if(res.data !== null) {
+          setUserState(res.data);
+        } else {
+          console.log("User not found. Please try again.");
+        }
+      })
     } catch (error) {
       console.log("User not found. Please try again.");
     }
@@ -34,12 +36,14 @@ const Index = () => {
   const loadRepos = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await API.get(`/users/felipetrova/repos`);
-      setReposState(response.data);
-
-      if (response.data.length === 0) {
-        console.log("Repositories not found. Please try again.");
-      }
+      axios(`https://api.github.com/users/felipetrova/repos`).then(res => {
+        console.log(res.data);
+        if(res.data !== null && res.data.length > 0) {
+          setReposState(res.data);
+        } else {
+          console.log("Repositories not found. Please try again.");
+        }
+      })
     } catch (error) {
       console.log("Repositories not found. Please try again.");
     }

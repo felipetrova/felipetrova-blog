@@ -16,11 +16,7 @@ $ git clone https://github.com/felipetrova/felipetrova
 
 # Go into the repository
 $ cd navigate/to/felipetrova
-```
 
- - Duplicate the file `env-example` and save it as `.env`;
-
-```bash
 # Install dependencies
 $ yarn
 
