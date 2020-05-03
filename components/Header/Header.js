@@ -19,7 +19,7 @@ export default function header({ title, typeClass }) {
           tablet={6}
           desktop={10}
         >
-          <img src="/favicon.svg" />
+          <img src="/images/favicon.svg" />
           <p className="fn-s18px fn-wb title">{title}</p>
         </GridStyle.Col>
         

@@ -1,0 +1,4 @@
+[[headers]]
+for = "/*"
+[headers.values]
+Cache-Control = "out, max-age=360000" 
