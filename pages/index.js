@@ -19,7 +19,6 @@ const Index = () => {
     try {
       setLoading(true);
       axios(`https://api.github.com/users/felipetrova`).then(res => {
-        console.log(res.data);
         if(res.data !== null) {
           setUserState(res.data);
         } else {
@@ -37,7 +36,6 @@ const Index = () => {
     try {
       setLoading(true);
       axios(`https://api.github.com/users/felipetrova/repos`).then(res => {
-        console.log(res.data);
         if(res.data !== null && res.data.length > 0) {
           setReposState(res.data);
         } else {
