@@ -1,5 +1,7 @@
 # My blog ![github favicon](out/favicon.ico)
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1e06dfde-346f-4e30-8068-af53a7a62296/deploy-status)](https://app.netlify.com/sites/felipetrova/deploys)
+
 ## :rocket: Technologies
 
 - [ReactJS](https://reactjs.org/)
