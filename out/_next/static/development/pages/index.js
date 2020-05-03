@@ -1,45 +1,5 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/index.js"],{
 
-/***/ "./Services/Api.js":
-/*!*************************!*\
-  !*** ./Services/Api.js ***!
-  \*************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-
-
-var headers = {
-  "Content-Type": "application/json"
-};
-var API = axios__WEBPACK_IMPORTED_MODULE_1___default.a.create({
-  baseURL: "https://api.github.com/",
-  headers: headers
-});
-API.interceptors.request.use(function _callee(config) {
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function _callee$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          return _context.abrupt("return", config);
-
-        case 1:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, null, null, null, Promise);
-});
-/* harmony default export */ __webpack_exports__["default"] = (API);
-
-/***/ }),
-
 /***/ "./components/Header/Header.js":
 /*!*************************************!*\
   !*** ./components/Header/Header.js ***!
@@ -9970,7 +9930,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Header_Header__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Header/Header */ "./components/Header/Header.js");
 /* harmony import */ var _components_Loading_Loading__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Loading/Loading */ "./components/Loading/Loading.js");
 /* harmony import */ var _components_Repository_Repository__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Repository/Repository */ "./components/Repository/Repository.js");
-/* harmony import */ var _Services_Api__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Services/Api */ "./Services/Api.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
 
 
 var _this = undefined,
@@ -10001,78 +9962,62 @@ var Index = function Index() {
       setLoading = _useState3[1];
 
   var loadUser = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function _callee() {
-    var response;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            setLoading(true);
-            _context.next = 4;
-            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(_Services_Api__WEBPACK_IMPORTED_MODULE_7__["default"].get("/users/felipetrova"));
+            try {
+              setLoading(true);
+              axios__WEBPACK_IMPORTED_MODULE_7___default()("https://api.github.com/users/felipetrova").then(function (res) {
+                console.log(res.data);
 
-          case 4:
-            response = _context.sent;
-            setUserState(response.data);
-
-            if (response.data.length === 0) {
+                if (res.data !== null) {
+                  setUserState(res.data);
+                } else {
+                  console.log("User not found. Please try again.");
+                }
+              });
+            } catch (error) {
               console.log("User not found. Please try again.");
             }
 
-            _context.next = 12;
-            break;
-
-          case 9:
-            _context.prev = 9;
-            _context.t0 = _context["catch"](0);
-            console.log("User not found. Please try again.");
-
-          case 12:
             setLoading(false);
 
-          case 13:
+          case 2:
           case "end":
             return _context.stop();
         }
       }
-    }, null, null, [[0, 9]], Promise);
+    }, null, null, null, Promise);
   });
   var loadRepos = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function _callee2() {
-    var response;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.prev = 0;
-            setLoading(true);
-            _context2.next = 4;
-            return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(_Services_Api__WEBPACK_IMPORTED_MODULE_7__["default"].get("/users/felipetrova/repos"));
+            try {
+              setLoading(true);
+              axios__WEBPACK_IMPORTED_MODULE_7___default()("https://api.github.com/users/felipetrova/repos").then(function (res) {
+                console.log(res.data);
 
-          case 4:
-            response = _context2.sent;
-            setReposState(response.data);
-
-            if (response.data.length === 0) {
+                if (res.data !== null && res.data.length > 0) {
+                  setReposState(res.data);
+                } else {
+                  console.log("Repositories not found. Please try again.");
+                }
+              });
+            } catch (error) {
               console.log("Repositories not found. Please try again.");
             }
 
-            _context2.next = 12;
-            break;
-
-          case 9:
-            _context2.prev = 9;
-            _context2.t0 = _context2["catch"](0);
-            console.log("Repositories not found. Please try again.");
-
-          case 12:
             setLoading(false);
 
-          case 13:
+          case 2:
           case "end":
             return _context2.stop();
         }
       }
-    }, null, null, [[0, 9]], Promise);
+    }, null, null, null, Promise);
   });
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     loadUser();
@@ -10083,7 +10028,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 58,
+      lineNumber: 62,
       columnNumber: 19
     }
   }), __jsx(_components_Header_Header__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -10092,7 +10037,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 60,
+      lineNumber: 64,
       columnNumber: 7
     }
   }), __jsx("div", {
@@ -10100,21 +10045,21 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 65,
+      lineNumber: 69,
       columnNumber: 7
     }
   }, __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Container"], {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 66,
+      lineNumber: 70,
       columnNumber: 9
     }
   }, __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Row"], {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 67,
+      lineNumber: 71,
       columnNumber: 11
     }
   }, __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Col"], {
@@ -10122,7 +10067,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 68,
+      lineNumber: 72,
       columnNumber: 13
     }
   }), __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Col"], {
@@ -10133,7 +10078,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 69,
+      lineNumber: 73,
       columnNumber: 13
     }
   }, __jsx("div", {
@@ -10141,14 +10086,14 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 75,
+      lineNumber: 79,
       columnNumber: 15
     }
   }, __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Row"], {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 76,
+      lineNumber: 80,
       columnNumber: 17
     }
   }, __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Col"], {
@@ -10159,7 +10104,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 77,
+      lineNumber: 81,
       columnNumber: 19
     }
   }, __jsx("img", {
@@ -10167,7 +10112,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 83,
+      lineNumber: 87,
       columnNumber: 21
     }
   })), __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Col"], {
@@ -10178,7 +10123,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 86,
+      lineNumber: 90,
       columnNumber: 19
     }
   }, __jsx("p", {
@@ -10186,7 +10131,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 92,
+      lineNumber: 96,
       columnNumber: 21
     }
   }, setUser.name))), __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Row"], {
@@ -10194,7 +10139,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 98,
+      lineNumber: 102,
       columnNumber: 17
     }
   }, __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Col"], {
@@ -10202,7 +10147,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 99,
+      lineNumber: 103,
       columnNumber: 19
     }
   }, __jsx("p", {
@@ -10210,7 +10155,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 100,
+      lineNumber: 104,
       columnNumber: 21
     }
   }, setUser.bio), __jsx("p", {
@@ -10218,14 +10163,14 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 104,
+      lineNumber: 108,
       columnNumber: 21
     }
   }, "My contacts:"), __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Row"], {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 108,
+      lineNumber: 112,
       columnNumber: 21
     }
   }, __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Col"], {
@@ -10236,7 +10181,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 109,
+      lineNumber: 113,
       columnNumber: 23
     }
   }, __jsx("p", {
@@ -10244,7 +10189,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 115,
+      lineNumber: 119,
       columnNumber: 25
     }
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -10253,14 +10198,14 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 116,
+      lineNumber: 120,
       columnNumber: 27
     }
   }, __jsx("a", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 120,
+      lineNumber: 124,
       columnNumber: 29
     }
   }, "felipee.trova@gmail.com")))), __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Col"], {
@@ -10271,7 +10216,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 127,
+      lineNumber: 131,
       columnNumber: 23
     }
   }, __jsx("p", {
@@ -10279,7 +10224,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 133,
+      lineNumber: 137,
       columnNumber: 25
     }
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -10288,14 +10233,14 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 134,
+      lineNumber: 138,
       columnNumber: 27
     }
   }, __jsx("a", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 138,
+      lineNumber: 142,
       columnNumber: 29
     }
   }, "https://twitter.com/felipetrova")))), __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Col"], {
@@ -10306,7 +10251,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 145,
+      lineNumber: 149,
       columnNumber: 23
     }
   }, __jsx("p", {
@@ -10314,7 +10259,7 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 151,
+      lineNumber: 155,
       columnNumber: 25
     }
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -10323,14 +10268,14 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 152,
+      lineNumber: 156,
       columnNumber: 27
     }
   }, __jsx("a", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 156,
+      lineNumber: 160,
       columnNumber: 29
     }
   }, setUser.html_url))))))))), __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Col"], {
@@ -10338,14 +10283,14 @@ var Index = function Index() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 167,
+      lineNumber: 171,
       columnNumber: 13
     }
   })), __jsx(_styles_Grid__WEBPACK_IMPORTED_MODULE_3__["Row"], {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 170,
+      lineNumber: 174,
       columnNumber: 11
     }
   }, setRepos && setRepos.length > 0 && setRepos.map(function (item, index) {
@@ -10357,7 +10302,7 @@ var Index = function Index() {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 173,
+        lineNumber: 177,
         columnNumber: 17
       }
     }, __jsx(_components_Repository_Repository__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -10365,7 +10310,7 @@ var Index = function Index() {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 179,
+        lineNumber: 183,
         columnNumber: 19
       }
     }));
@@ -10499,7 +10444,7 @@ var Col = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConf
 
 /***/ }),
 
-/***/ 2:
+/***/ 1:
 /*!*************************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2F&absolutePagePath=%2FUsers%2Ffelipetrova%2Fprojects%2Ffelipetrova%2Ffelipetrova%2Fpages%2Findex.js ***!
   \*************************************************************************************************************************************************/
@@ -10522,5 +10467,5 @@ module.exports = dll_2adc2403d89adc16ead0;
 
 /***/ })
 
-},[[2,"static/runtime/webpack.js"]]]);
+},[[1,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=index.js.map
